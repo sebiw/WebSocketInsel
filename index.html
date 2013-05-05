@@ -1,0 +1,56 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+<p><small>WebSocket Interface</small>
+
+<script type="text/javascript">
+var ws_host = "localhost";
+var ws_port = "1414";
+var ws_server = "";
+var ws_url = "ws://" + ws_host + ":" + ws_port;
+var socket = null;
+
+function $( id ){
+	return document.getElementById( id );
+}
+
+try {
+	socket = new WebSocket(ws_url);
+               
+	// Handlerfunktionen definieren
+	socket.onopen    = function(){ 
+		$('log').innerHTML += "<div>Sie sind erfolgreich verbunden</div>";
+		socket.send('{ "auth_name" : "' + prompt( 'Ihr Benutzername:' , 'Computer_' ) + '" }');
+		$('log').innerHTML += "<div>Sende Auth-Daten</div>";
+	};
+
+	socket.onmessage = function(msg){ 
+		$('log').innerHTML += "<div>Neue Nachricht: " + msg.data + "</div>";
+	};
+
+	socket.onclose   = function(msg){
+		$('log').innerHTML += "<div style=\"color: red;\">Verbindung wurde getrennt</div>"; 
+	};
+
+	socket.onerror   = function(msg){ 
+		$('log').innerHTML += "<div style=\"color: red;\">Fehler " + msg.data + "</div>"; 
+	};
+  
+} catch(ex){ 
+	alert("Exception: " + ex); 
+}
+
+</script>
+
+<input type="button" onclick="socket.send( prompt( 'text' , '' ) );" value="send">
+
+<input type="button" onclick="socket.close();" value="close">
+
+<div id="log"></div>
+
+</body>
+</html>
