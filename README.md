@@ -1,4 +1,5 @@
 WebSocketInsel
 ==============
 
-coming soon...
+- Test WebSocket Implementation for PHP
+- Use at your own risk
